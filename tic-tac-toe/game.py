@@ -12,16 +12,18 @@ class Game:
       print("move:"+ str(self.move))
       self.render_board()
       if self.turn == 1:
-        x,y = self.player1.move()
+        x,y = self.player1.move(self.game_board)
       else:
-        x,y = self.player2.move()
+        x,y = self.player2.move(self.game_board)
       while not self.is_move_valid(x,y):
         print("invalid move. please try again.")
         if self.turn == 1:
-          x,y = self.player1.move()
+          x,y = self.player1.move(self.game_board)
         else:
-          x,y = self.player2.move()
-      self.game_board[y][x] = self.turn
+          x,y = self.player2.move(self.game_board)
+      print("x:",x)
+      print("y:",y)
+      self.game_board[x][y] = self.turn
       if self.is_winner():
         print("winner is player: " + str(self.turn))
         if self.turn == 1:

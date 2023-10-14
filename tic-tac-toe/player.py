@@ -1,8 +1,13 @@
+
 class Player:
-  def __init__(self, AI):
+  def __init__(self, AI):# human,ab,rl
     self.score = 0
-    self.AI = AI # human,ab,rl
-  def move(self):
-    x = int(input("please enter x coordinate: "))
-    y = int(input("please enter y coordinate: "))
-    return x,y
+    self.AI = AI
+
+  def move(self,game_board):
+    if self.AI == "human":
+      x = int(input("please enter column: "))
+      y = int(input("please enter row: "))
+      return x,y
+    else:
+      return self.AI.move(game_board)

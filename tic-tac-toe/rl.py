@@ -23,6 +23,38 @@ class RL:
         self.min_epsilon = 0.0001
         self.exploration_decay_rate = 0.0001
 
+    def move(self,current_table):
+        for i,t in enumerate(self.all_possible_states):
+            if t == current_table:
+                state = i
+                break
+        current_state = self.convert_state_to_array(current_table)
+        possible_actions = []
+        for i,q_value in enumerate(self.q_table[state,:]):
+            if current_state[i] == 0:
+                possible_actions.append(q_value)
+            else:
+                possible_actions.append(-1)
+        action = np.argmax(possible_actions)
+        if action == 0:
+            return 0,0
+        elif action == 1:
+            return 0,1
+        elif action == 2:
+            return 0,2
+        elif action == 3:
+            return 1,0
+        elif action == 4:
+            return 1,1
+        elif action == 5:
+            return 1,2
+        elif action == 6:
+            return 2,0
+        elif action == 7:
+            return 2,1
+        elif action == 8:
+            return 2,2
+
     def train(self):
         for episode in range(self.num_episodes):
             state = 0
@@ -42,8 +74,6 @@ class RL:
                 if done == True:
                     break
             self.epsilon = self.min_epsilon + (self.max_epsilon - self.min_epsilon) * np.exp(-self.exploration_decay_rate*episode)
-        print(self.q_table)
-
     
     def find_possible_actions(self):
         possible_actions = []
@@ -82,6 +112,7 @@ class RL:
             if self.convert_state_to_array(state) == next_state:
                 new_state = i
                 new_table = state
+                break
         reward, done = self.eval_state(self.convert_state_to_array(new_table))
         return new_state, reward, done
 
@@ -115,8 +146,4 @@ class RL:
         for item in row:
           if item == 0:
             return False
-      return True    
-
-rl = RL()
-rl.train()
-print(rl)
+      return True
