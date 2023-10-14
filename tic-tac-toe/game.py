@@ -90,5 +90,5 @@ class Game:
     for row in self.game_board:
       for item in row:
         if item == 0:
-          return False    
+          return False
     return True
