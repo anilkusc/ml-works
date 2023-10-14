@@ -2,7 +2,6 @@ class Game:
   def __init__(self, player1, player2):
     self.player1 = player1
     self.player2 = player2
-    
     self.turn = 1
     self.game_board = [[0,0,0],[0,0,0],[0,0,0]]
   
@@ -12,20 +11,30 @@ class Game:
       print("who's turn:"+ str(self.turn))
       print("move:"+ str(self.move))
       self.render_board()
-      x = int(input("please enter x coordinate: "))
-      y = int(input("please enter y coordinate: "))
+      if self.turn == 1:
+        x,y = self.player1.move()
+      else:
+        x,y = self.player2.move()
       while not self.is_move_valid(x,y):
         print("invalid move. please try again.")
-        x = int(input("please enter x coordinate: "))
-        y = int(input("please enter y coordinate: "))
+        if self.turn == 1:
+          x,y = self.player1.move()
+        else:
+          x,y = self.player2.move()
       self.game_board[y][x] = self.turn
       if self.is_winner():
         print("winner is player: " + str(self.turn))
+        if self.turn == 1:
+          self.player1.score += 1
+        else:
+          self.player2.score += 1
         self.render_board()
         self.restart_game()
         continue
       if self.is_draw():
         print("this is a draw!")
+        self.player1.score += 1
+        self.player2.score += 1        
         self.render_board()
       if self.turn == 1:
         self.turn = 2
