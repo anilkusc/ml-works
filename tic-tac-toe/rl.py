@@ -14,7 +14,7 @@ class RL:
         self.draw_reward = 10
         self.lost_reward = 0
         self.continue_reward = 1
-        self.num_episodes = 10000
+        self.num_episodes = 100000
         self.max_steps = 9
         self.learning_rate = 0.7
         self.discount_rate = 0.99
