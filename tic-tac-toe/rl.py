@@ -10,10 +10,11 @@ class RL:
         self.state_space_size = len(self.all_possible_states)
         self.q_table = np.zeros((self.state_space_size, self.action_space_size))
 
-        self.win_reward = 20
-        self.draw_reward = 1
-        self.lost_reward = -10
-        self.num_episodes = 100
+        self.win_reward = 100
+        self.draw_reward = 10
+        self.lost_reward = 0
+        self.continue_reward = 1
+        self.num_episodes = 10000
         self.max_steps = 9
         self.learning_rate = 0.7
         self.discount_rate = 0.99
@@ -103,7 +104,7 @@ class RL:
             return self.draw_reward,True
         if self.is_lost(state):
             return self.lost_reward,True
-        return 0,False
+        return self.continue_reward,False
 
     def step(self,current_state,action):
         current_table = self.all_possible_states[current_state]
