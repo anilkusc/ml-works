@@ -46,7 +46,7 @@ class Game:
       self.move += 1
 
   def restart_game(self):
-    print("game is restarting...")
+    print("board is restarting...")
     self.turn = 1
     self.game_board = [[0,0,0],[0,0,0],[0,0,0]]
     self.move = 1
