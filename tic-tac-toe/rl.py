@@ -16,7 +16,7 @@ class RL:
         self.draw_reward = 10
         self.lost_reward = 0
         self.continue_reward = 1
-        self.num_episodes = 10000
+        self.num_episodes = 50000
         self.max_steps = 9
         self.learning_rate = 0.7
         self.discount_rate = 0.99
@@ -60,7 +60,8 @@ class RL:
     def train(self):
         for episode in range(self.num_episodes):
             print("%", episode*100/self.num_episodes)
-            state = 0
+            # It can start with 0 or 2
+            state = random.choice([0,2,0,5,0,13,0,35,0,96,0,267,0,750,0,2123,0,6046])
             done = False
             for step in range(self.max_steps):
                 exp_tradeoff = random.uniform(0, 1)
