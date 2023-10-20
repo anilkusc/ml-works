@@ -39,6 +39,7 @@ class Game:
         self.player2.score += 1        
         self.render_board()
         self.restart_game()
+        continue
       if self.turn == 1:
         self.turn = 2
       else:
