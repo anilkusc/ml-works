@@ -1,22 +1,28 @@
 import numpy as np
 from itertools import product
 import random
+import json
 
-
+import os
 class RL:
     def __init__(self):
         self.type = "rl"
         self.all_possible_states = self.create_states()
         self.action_space_size = 9
         self.state_space_size = len(self.all_possible_states)
-        self.q_table = np.zeros(
+        if os.path.exists("q_table.json"):
+            with open("q_table.json", "r") as json_file:
+                q_table_json = json.load(json_file)
+                self.q_table = np.array(q_table_json)
+        else:
+            self.q_table = np.zeros(
             (self.state_space_size, self.action_space_size))
 
-        self.win_reward = 100
-        self.draw_reward = 10
+        self.win_reward = 10
+        self.draw_reward = 2
         self.lost_reward = 0
         self.continue_reward = 1
-        self.num_episodes = 50000
+        self.num_episodes = 10000
         self.max_steps = 9
         self.learning_rate = 0.7
         self.discount_rate = 0.99
@@ -89,6 +95,9 @@ class RL:
             self.epsilon = self.min_epsilon + \
                 (self.max_epsilon - self.min_epsilon) * \
                 np.exp(-self.exploration_decay_rate*episode)
+        q_table_json = self.q_table.tolist()
+        with open("q_table.json", "w") as json_file:
+            json.dump(q_table_json, json_file)
 
     def find_possible_actions(self, state_array):
         possible_actions = []
