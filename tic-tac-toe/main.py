@@ -2,7 +2,7 @@ from game import Game
 from player import Player
 from rl import RL
 from abprunning import AB
-
+"""
 player1_type = input("What is player1 type?ab,rl,human: ")
 while player1_type != "ab" and player1_type != "human" and player1_type != "rl":
     player1_type = input("Wrong player type.What is player1 type?ab,rl,human: ")
@@ -31,7 +31,12 @@ elif player2_type=="ab":
     print("Player 2 AI is training. Please wait...")
 else:
     player2AI = "human"
-
+"""
+player1AI = RL()
+print("Player 1 AI is training. Please wait...")
+player1AI.train()
+print("Completed")
+player2AI = "human"
 player1 = Player(AI=player1AI)
 player2 = Player(AI=player2AI)
 game = Game(player1,player2)
