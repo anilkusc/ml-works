@@ -5,18 +5,26 @@ import matplotlib.pyplot as plt
 import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
+import os
 
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
-        self.conv1 = nn.Conv2d(3, 32, 3)
-        self.conv2 = nn.Conv2d(32, 64, 3)
-        self.conv3 = nn.Conv2d(64, 128, 3)
+        # convolutional layer
+        ##in,out,kernel size,padding
+        self.conv1 = nn.Conv2d(3, 32, 3,padding=1)
+        self.conv2 = nn.Conv2d(32, 64, 3,padding=1)
+        self.conv3 = nn.Conv2d(64, 128, 3,padding=1)
+        # pool layer
         self.pool = nn.MaxPool2d(2, 2)
+        # fully connected layer
         self.fc1 = nn.Linear(128 * 2 * 2, 128)
         self.fc2 = nn.Linear(128, 64)
         self.fc3 = nn.Linear(64, 32)
         self.fc4 = nn.Linear(32, 10)
+        # dropout layer
+        ## Parameter p indicates the probability of a unit (neuron) being disabled. 
+        ## Probability of a unit being disabled in each training iteration is 20% (0.2).
         self.dropout1 = nn.Dropout(p=0.2, inplace=False)
     def forward(self, x):
         x = self.pool(F.relu(self.conv1(x)))
@@ -42,6 +50,8 @@ def main():
     test_loader = torch.utils.data.DataLoader(testset, batch_size=5, shuffle=False, num_workers=2)
     #classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
     model = Net()
+    if os.path.isfile('model_weights.pth'):
+        model.load_state_dict(torch.load('model_weights.pth'))
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     model.to(device)
     criterion = nn.CrossEntropyLoss()
@@ -53,7 +63,7 @@ def main():
         saved_loss = 0.0
         for i, data in enumerate(train_loader, 0):           
             inputs, labels = data
-            inputs, labels = inputs.to(device), labels.to(device)
+            inputs, labels = inputs.to(device), labels.to(device) 
             optimizer.zero_grad()
             outputs = model(inputs)
             loss = criterion(outputs, labels)
@@ -65,6 +75,7 @@ def main():
                 saved_loss = running_loss
                 running_loss = 0.0
         epoch_losses.append(saved_loss/10000)
+    torch.save(model.state_dict(), 'model_weights.pth')
     print('Training done!')
     total = 0
     correct = 0
