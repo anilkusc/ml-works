@@ -2,6 +2,14 @@ import random
 
 class Game:
   def __init__(self,player):
+
+    self.cards = self.shuffle_cards()
+    self.croupier_cards = []
+    self.player_cards = []
+    self.is_turn_over = False
+    self.player = player
+
+  def shuffle_cards(self):
     card_values = [
       1,1,1,1,  # Ace
       2,2,2,2, 
@@ -18,15 +26,18 @@ class Game:
       10,10,10,10   # King 
     ]
     random.shuffle(card_values)
-    self.cards = card_values
-    self.croupier_cards = []
-    self.player_cards = []
-    self.is_turn_over = False
-    self.player = player
+    return card_values
 
   def start(self):
-    while not self.is_turn_over:
+    while True:
+      print("#############################################")
+      print("Starting new turn")
       self.turn()
+      self.is_turn_over = False
+      if len(self.cards) < 10:
+        print("#############################################")
+        print("Reshufling cards")
+        self.cards = self.shuffle_cards()
 
   def turn(self):
     self.deliver_first_time()
@@ -49,6 +60,8 @@ class Game:
     print("#############################################")
     self.print_current_status()
     print("#############################################")
+    self.croupier_cards = []
+    self.player_cards = []
 
 
   def deliver_first_time(self):
@@ -79,22 +92,43 @@ class Game:
       print("# "+str(card)+" #")
 
   def evaluate_players_card(self):
-      if sum(self.player_cards) > 20:
+      if self.sum_of_cards(self.player_cards) > 20:
         self.is_turn_over = True
 
   def evaluate_courpiers_card(self):
 
-    if 15 < sum(self.croupier_cards) < 22:
-      self.is_turn_over = True
-    else:
+    if self.sum_of_cards(self.croupier_cards) < 16 :
       print("Courpier needs to pop new card...")
+    else:
+      self.is_turn_over = True
 
   def evaluate_game(self): # 0 = winner is courpier , 1 = winner is player
 
-    if sum(self.croupier_cards) > 21 or sum(self.player_cards) > sum(self.croupier_cards):
+    if self.sum_of_cards(self.player_cards) > 21:
+      print("Courpier Wins!")
+      self.player.win = 0
+      return
+    if self.sum_of_cards(self.croupier_cards) > 21:
       print("Player Wins!")
       self.player.win = 1
+      return
+    if  self.sum_of_cards(self.player_cards) > self.sum_of_cards(self.croupier_cards):
+      print("Player Wins!")
+      self.player.win = 1
+      return
     else:
       print("Courpier Wins!")
       self.player.win = 0
-        
+      return
+    
+  def sum_of_cards(self,cards):
+    total = 0
+    for card in cards:
+      if card != 1:
+        total = total + card
+      else:
+        if (total+card) > 21:
+          total = total + 1
+        else:
+          total = total + 11
+    return total
