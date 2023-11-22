@@ -72,24 +72,30 @@ class Game:
 
   def print_current_status_censored(self):
     print("---------croupier's hand---------")
+    card_vis = "#"
     for i,card in enumerate(self.croupier_cards):
       if len(self.croupier_cards)-1 == i:
-        print("# ? #")
+        card_vis = card_vis +" ? #"
       else:
-        print("# "+str(card)+" #")
-
+        card_vis = card_vis +" "+str(card)+" #"
+    print(card_vis)
+    card_vis = "#"
     print("---------player's hand---------")
     for card in self.player_cards:
-      print("# "+str(card)+" #")
+        card_vis = card_vis +" "+str(card)+" #"
+    print(card_vis)
 
   def print_current_status(self):
     print("---------croupier's hand---------")
+    card_vis = "#"
     for i,card in enumerate(self.croupier_cards):
-        print("# "+str(card)+" #")
-    
+        card_vis = card_vis +" "+str(card)+" #"
+    print(card_vis)
+    card_vis = "#"
     print("---------player's hand---------")
     for card in self.player_cards:
-      print("# "+str(card)+" #")
+        card_vis = card_vis +" "+str(card)+" #"
+    print(card_vis)
 
   def evaluate_players_card(self):
       if self.sum_of_cards(self.player_cards) > 20:
@@ -121,14 +127,20 @@ class Game:
       self.player.win = 0
       return
     
-  def sum_of_cards(self,cards):
-    total = 0
-    for card in cards:
-      if card != 1:
-        total = total + card
-      else:
-        if (total+card) > 21:
-          total = total + 1
-        else:
-          total = total + 11
-    return total
+  def sum_of_cards(self, cards):
+      total = 0
+      has_ace = False
+
+      for card in cards:
+          if card != 1:
+              total += card
+          else:
+              has_ace = True
+
+      if has_ace:
+          if total + 11 <= 21:
+              total += 11
+          else:
+              total += 1
+
+      return total
