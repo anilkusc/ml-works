@@ -8,6 +8,9 @@ class Game:
     self.player_cards = []
     self.is_turn_over = False
     self.player = player
+    self.ai_wins = 0
+    self.courpier_wins = 0
+    self.total_game_count = 1000
 
   def shuffle_cards(self):
     card_values = [
@@ -29,7 +32,9 @@ class Game:
     return card_values
 
   def start(self):
+    i = 0
     while True:
+      i += 1
       print("#############################################")
       print("Starting new turn")
       self.turn()
@@ -38,12 +43,17 @@ class Game:
         print("#############################################")
         print("Reshufling cards")
         self.cards = self.shuffle_cards()
+      if i > self.total_game_count:
+         print("Wins:",self.ai_wins)
+         print("Lost:",self.courpier_wins)
+         break
+
 
   def turn(self):
     self.deliver_first_time()
     self.print_current_status_censored()
     
-    while not self.is_turn_over and self.player.is_hit():
+    while not self.is_turn_over and self.player.is_hit(self.croupier_cards,self.player_cards):
       self.player_cards.append(self.cards.pop(0))    
       self.evaluate_players_card()
       self.print_current_status_censored()
@@ -112,19 +122,19 @@ class Game:
 
     if self.sum_of_cards(self.player_cards) > 21:
       print("Courpier Wins!")
-      self.player.win = 0
+      self.courpier_wins += 1
       return
     if self.sum_of_cards(self.croupier_cards) > 21:
       print("Player Wins!")
-      self.player.win = 1
+      self.ai_wins += 1
       return
     if  self.sum_of_cards(self.player_cards) > self.sum_of_cards(self.croupier_cards):
       print("Player Wins!")
-      self.player.win = 1
+      self.ai_wins += 1
       return
     else:
       print("Courpier Wins!")
-      self.player.win = 0
+      self.courpier_wins += 1
       return
     
   def sum_of_cards(self, cards):

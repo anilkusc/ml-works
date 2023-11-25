@@ -1,10 +1,10 @@
 
 class Player:
-  def __init__(self, AI):# human,ab,rl
+  def __init__(self, AI):# human,rl
     self.win = 0
     self.AI = AI
 
-  def is_hit(self): # Take another card = hit
+  def is_hit(self,courpier_cards,player_cards): # Take another card = hit
     if self.AI == "human":
       hit_or_stand = ""
       while not (hit_or_stand == "h" or hit_or_stand == "s"):
@@ -16,4 +16,4 @@ class Player:
         else:
           print("Invalid option. Please select again.")
     else:
-      return self.AI.move()
+      return self.AI.move(courpier_cards,player_cards)
