@@ -69,12 +69,14 @@ class RL:
                 new_state, reward, done = self.step(state, action)
                 transitions.append([state,action])
                 state = new_state
-                global_reward = reward + self.discount_rate * global_reward
+                #global_reward = reward + self.discount_rate * global_reward
+                global_reward += reward
                 if done:
                     break
             average_reward = global_reward / len(transitions)
             for s,a in reversed(transitions):
-                self.q_table[s[0],s[1], a] = self.q_table[s[0],s[1], a] * (1 - self.learning_rate) + self.learning_rate * average_reward
+                #self.q_table[s[0],s[1], a] = self.q_table[s[0],s[1], a] * (1 - self.learning_rate) + self.learning_rate * average_reward
+                self.q_table[s[0],s[1], a] = self.q_table[s[0],s[1], a] + self.discount_rate * average_reward
             self.epsilon = self.min_epsilon + (self.max_epsilon - self.min_epsilon) * np.exp(-self.exploration_decay_rate*episode)
             completion_percentage = (episode + 1) / self.num_episodes * 100
             print(f"Episode {episode + 1}/{self.num_episodes} - Average Reward: {average_reward} - Completion: {completion_percentage:.2f}%")
