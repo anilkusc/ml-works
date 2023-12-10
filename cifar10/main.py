@@ -80,6 +80,13 @@ def run_all(learning_rate,momentum):
                 running_loss = 0.0
         epoch_losses.append(saved_loss/10000)
     training_time_end = datetime.now()
+    epochs = range(1,21)
+    plt.plot(epochs, epoch_losses, 'g', label='Training loss')
+    plt.title('Trainingloss')
+    plt.xlabel('Epochs')
+    plt.ylabel('Loss')
+    plt.legend()
+    plt.show()    
     training_time = training_time_end - training_time_start
     print('Training done!')
     total = 0
