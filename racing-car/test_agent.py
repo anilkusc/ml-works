@@ -1,6 +1,5 @@
 import gym
 from ddpg import DDPG 
-from exploration_noise import GaussianNoise
 
 env = gym.make('CarRacing-v2',render_mode="human")
 state_dim = 1
@@ -20,7 +19,4 @@ for i in range(100):
         action = agent.select_action(state)
         next_state, reward, done, info,_ = env.step(action)
         env.render()
-        if done: 
-            print("reward{}".format(reward))
-            print("Episode \t{}, the episode reward is \t{:0.2f}".format(i, ep_r))
         state = next_state
