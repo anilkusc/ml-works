@@ -14,10 +14,7 @@ max_epsilon = 1
 min_epsilon = 0.001
 exploration_decay_rate = 0.0001
 # getting input dimension for fitting to neural network
-sd = env.observation_space.shape
-state_dim = 1
-for sd in env.observation_space.shape:
-    state_dim = state_dim *sd
+state_dim = int(env.observation_space.shape[0])
 
 action_dim = env.action_space.shape[0]
 max_action = float(env.action_space.high[0])
