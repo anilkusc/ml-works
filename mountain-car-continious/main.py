@@ -7,12 +7,12 @@ import os
 
 env = gym.make('MountainCarContinuous-v0')
 all_rewards = []
-num_episodes = 1000
+num_episodes = 10000
 num_trajectory = 1000
 epsilon = 1
 max_epsilon = 1
 min_epsilon = 0.001
-exploration_decay_rate = 0.0005
+exploration_decay_rate = 0.0001
 # getting input dimension for fitting to neural network
 sd = env.observation_space.shape
 state_dim = 1
@@ -53,14 +53,14 @@ for episode in range(num_episodes):
 agent.save()
 env.close()
 
-env = gym.make('MountainCarContinuous-v0',render_mode="human")
-for i in range(100):
-    state = env.reset()[0]
-    done = False
-    while not done:
-        action = agent.select_action(state)
-        
-        next_state, reward, done, info,_ = env.step(action)
-        print("action: " + str(action) + " Reward: " + str(reward))
-        env.render()
-        state = next_state
+#env = gym.make('MountainCarContinuous-v0',render_mode="human")
+#for i in range(100):
+#    state = env.reset()[0]
+#    done = False
+#    while not done:
+#        action = agent.select_action(state)
+#        
+#        next_state, reward, done, info,_ = env.step(action)
+#        print("action: " + str(action) + " Reward: " + str(reward))
+#        env.render()
+#        state = next_state

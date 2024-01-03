@@ -14,8 +14,8 @@ class DDPG():
                  tau=0.009, # will use for target network updating
                  batch_size=1024, # will use to update target networks
                  update_iteration=16,
-                 hidden_layer_actor=256,
-                 hidden_layer_critic=256,
+                 hidden_layer_actor=512,
+                 hidden_layer_critic=512,
                  discount_factor=0.99,
                  ):
         # parameters
@@ -36,14 +36,14 @@ class DDPG():
         self.actor = Actor(self.state_dim,self.action_dim,self.hidden_layer_actor).to(device)
         self.actor_target = Actor(self.state_dim,self.action_dim,self.hidden_layer_actor).to(device)
         self.actor_target.load_state_dict(self.actor.state_dict())
-        self.actor_optimizer = torch.optim.Adam(self.actor.parameters(), lr=0.0005) # lr = 0.001 , 3e-3
+        self.actor_optimizer = torch.optim.Adam(self.actor.parameters(), lr=0.00001) # lr = 0.001 , 3e-3
         #self.actor_optimizer = torch.optim.SGD(self.actor.parameters(), lr=0.1, momentum=0.99)
         
         # critic network
         self.critic = Critic(self.state_dim,self.action_dim,self.hidden_layer_critic).to(device)
         self.critic_target = Critic(self.state_dim,self.action_dim,self.hidden_layer_critic).to(device)
         self.critic_target.load_state_dict(self.critic.state_dict())
-        self.critic_optimizer = torch.optim.Adam(self.critic.parameters(), lr=0.0005) # lr = 0.01 , 2e-2
+        self.critic_optimizer = torch.optim.Adam(self.critic.parameters(), lr=0.00001) # lr = 0.01 , 2e-2
         #self.critic_optimizer = torch.optim.SGD(self.actor.parameters(), lr=0.1, momentum=0.99)          
 
         self.num_critic_update_iteration = 0
